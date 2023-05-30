@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @version 1.0.0 [版本信息]
  * @date 2023/05/30 12:44:23 [时间，这里是年/月/日 时:分:秒的格式]
  */
-@Controller
+@Controller     // 返回视图名称  加rest直接返回响应数据
 public class HelloController {
     @RequestMapping("/test")
     @ResponseBody
