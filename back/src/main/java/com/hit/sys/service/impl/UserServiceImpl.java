@@ -28,18 +28,19 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
-//    @Autowired      //自动将标注了@Autowired注解的依赖对象注入到需要使用它的类中
-//    private RedisTemplate redisTemplate;
+    @Autowired      //自动将标注了@Autowired注解的依赖对象注入到需要使用它的类中
+    private RedisTemplate redisTemplate;
 
-//    @Autowired
+//    @Autowired      //增添密码加密后的方法
 //    private PasswordEncoder passwordEncoder;
-
+//
 //    @Override
 //    public Map<String, Object> login(User user) {
 //        // 根据用户名查询
 //        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
 //        wrapper.eq(User::getUsername,user.getUsername());
 //        User loginUser = this.baseMapper.selectOne(wrapper);
+//
 //        // 结果不为空，并且密码和传入密码匹配，则生成token，并将用户信息存入redis
 //        if(loginUser != null && passwordEncoder.matches(user.getPassword(),loginUser.getPassword())){
 //            // 暂时用UUID, 终极方案是jwt
@@ -57,7 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 //        return null;
 //    }
 
-    @Override
+    @Override       //老逻辑：无密码加密的
     public Map<String, Object> login(User user) {
         // 根据用户名和密码查询
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
@@ -70,8 +71,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             String key = "user:" + UUID.randomUUID();
 
             // 存入redis
-//            loginUser.setPassword(null);
-//            redisTemplate.opsForValue().set(key,loginUser,30, TimeUnit.MINUTES);
+            loginUser.setPassword(null);        //稍后做加密处理
+            redisTemplate.opsForValue().set(key,loginUser,30, TimeUnit.MINUTES);    //登录超时时间30分钟
 
             // 返回数据
             Map<String, Object> data = new HashMap<>();
@@ -81,32 +82,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return null;
     }
 
+
     @Override
     public Map<String, Object> getUserInfo(String token) {
+        // 根据token获取用户信息，redis
+        Object obj = redisTemplate.opsForValue().get(token);
+        if(obj != null){        //做一个反序列化
+            User loginUser = JSON.parseObject(JSON.toJSONString(obj),User.class);   //obj转化为json字符串
+            Map<String, Object> data = new HashMap<>();
+            data.put("name",loginUser.getUsername());
+//            data.put("avatar", loginUser.getAvatar());
+
+            // 角色
+            List<String> roleList = this.baseMapper.getRoleNameByUserId(Math.toIntExact(loginUser.getUserId()));//这里转换为int
+            data.put("roles",roleList);
+
+            return data;
+        }
         return null;
     }
 
-//    @Override
-//    public Map<String, Object> getUserInfo(String token) {
-//        // 根据token获取用户信息，redis
-//        Object obj = redisTemplate.opsForValue().get(token);
-//        if(obj != null){
-//            User loginUser = JSON.parseObject(JSON.toJSONString(obj),User.class);
-//            Map<String, Object> data = new HashMap<>();
-//            data.put("name",loginUser.getUsername());
-//            data.put("avatar", loginUser.getAvatar());
-//
-//            // 角色
-//            List<String> roleList = this.baseMapper.getRoleNameByUserId(loginUser.getId());
-//            data.put("roles",roleList);
-//
-//            return data;
-//        }
-//        return null;
-//    }
-
     @Override
     public void logout(String token) {
-//        redisTemplate.delete(token);
+        redisTemplate.delete(token);
     }
 }

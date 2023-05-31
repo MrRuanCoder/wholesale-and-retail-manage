@@ -18,6 +18,6 @@ public class SpearApplication {
 	@Bean
 	public PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
-	}
+	}	//密码加密类bean
 
 }

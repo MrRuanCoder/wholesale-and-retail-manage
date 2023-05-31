@@ -2,5 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hit.sys.mapper.UserMapper">
 
-    <select id="getRoleNameByUserId" resultType="java.lang.String"></select>
+<!--    <select id="getRoleNameByUserId" resultType="java.lang.String"></select>-->
+    <select id="getRoleNameByUserId" parameterType="Integer" resultType="String">
+        SELECT
+            b.`role_name`
+        FROM t_user_role a, t_role b
+        WHERE
+            a.role_id = b.`role_id`
+          AND a.user_id = #{userId}
+    </select>
+<!--    userId是一个参数，它代表用户的ID。参数是在查询执行时从外部传入的值-->
 </mapper>

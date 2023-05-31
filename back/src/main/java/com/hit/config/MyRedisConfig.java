@@ -13,9 +13,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
@@ -55,4 +58,39 @@ public class MyRedisConfig {
 
         return  redisTemplate;
     }
+//    @Resource
+//    private RedisConnectionFactory factory;
+//    //RedisTemplate 中配置自定义的反序列化器以将十六进制字符串转换为字符串类型
+//    @Bean
+//    public RedisTemplate<String, String> redisTemplate() {
+//        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+//        redisTemplate.setConnectionFactory(factory);
+//
+//        // 设置键的序列化器
+//        redisTemplate.setKeySerializer(new StringRedisSerializer());
+//
+//        // 设置值的序列化器
+//        redisTemplate.setValueSerializer(new HexStringToStringSerializer());
+//
+//        redisTemplate.afterPropertiesSet();
+//        return redisTemplate;
+//    }
+//
+//    public class HexStringToStringSerializer implements RedisSerializer<String> {
+//
+//        @Override
+//        public byte[] serialize(String s) throws SerializationException {
+//            // 不需要实现该方法，因为我们只关注反序列化
+//            return null;
+//        }
+//
+//        @Override
+//        public String deserialize(byte[] bytes) throws SerializationException {
+//            if (bytes == null) {
+//                return null;
+//            }
+//            return new String(bytes, StandardCharsets.UTF_8);
+//        }
+//    }
+
 }
