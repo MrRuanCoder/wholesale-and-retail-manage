@@ -19,14 +19,14 @@ public class CodeGenerator {
         String username = "root";
         String password = "";
         String moduleName = "sys";
-        String mapperLocation = "D:\\CS\\projects\\SPPM lab\\SPPM_lab\\wholesale-and-retail-manage\\back\\src\\main\\resources\\mapper\\" + moduleName;
-        String tables = "x_user,x_role,x_menu,x_user_role,x_role_menu";
+        String mapperLocation = "D:\\CS\\projects\\SPPM_lab\\SPPM_lab\\wholesale-and-retail-manage\\back\\src\\main\\resources\\mapper\\" + moduleName;
+        String tables = "t_user,t_role,t_user_role,t_role_menu";
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> {
                     builder.author("Ruan") // 设置作者
                             //.enableSwagger() // 开启 swagger 模式
                             //.fileOverride() // 覆盖已生成文件
-                            .outputDir("D:\\CS\\projects\\SPPM lab\\SPPM_lab\\wholesale-and-retail-manage\\back\\src\\main\\java"); // 指定输出目录
+                            .outputDir("D:\\CS\\projects\\SPPM_lab\\SPPM_lab\\wholesale-and-retail-manage\\back\\src\\main\\java"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.hit") // 设置父包名
