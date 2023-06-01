@@ -1,0 +1,26 @@
+server:
+  port: 9999
+
+spring:
+  datasource:
+      username: root
+      password:
+      url: jdbc:mysql:///hitlab
+#      username: hitlab
+#      password: root
+#      url: jdbc:mysql://43.143.209.231:3306/hitlab
+  redis:
+    port: 6379
+    host: localhost
+
+logging:
+  level:
+    com.hit: debug
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+
