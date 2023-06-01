@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 /**
- * description: add a description [描述信息]
+ * description: 与redis数据库进行交互 [描述信息]
  *
  * @author Ruan [作者]
  * @version 1.0.0 [版本信息]

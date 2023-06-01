@@ -1,5 +1,6 @@
 package com.hit.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
@@ -19,11 +20,13 @@ public class UserRole implements Serializable {
     /**
      * 用户id
      */
+    @TableField("user_id")  //
     private Long userId;
 
     /**
      * 角色id
      */
+    @TableField("role_id")  //
     private Long roleId;
 
     public Long getUserId() {

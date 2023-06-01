@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sys/user")
-@CrossOrigin        //跨域处理
+@CrossOrigin       //跨域处理
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -47,6 +47,18 @@ public class UserController {
         }
         return Result.fail(20002,"用户名或密码错误");
     }
+//@PostMapping("/login")
+//public Result<Map<String, Object>> login(@RequestBody UserLoginRequest request) {
+//    String username = request.getUsername();
+//    String password = request.getPassword();
+//
+//    Map<String, Object> data = userService.login(username, password);
+//    if (data != null) {
+//        return Result.success(data);
+//    }
+//    return Result.fail(20002, "用户名或密码错误");
+//}
+
 
     @GetMapping("/info")
     public Result<Map<String,Object>> getUserInfo(@RequestParam("token") String token){
@@ -111,7 +123,7 @@ public class UserController {
         return Result.success(user);
     }
 
-    @DeleteMapping("/{id}")     //真删除，不要改
+    @DeleteMapping("/{id}")
     public Result<User> deleteUserById(@PathVariable("id") Integer id){
         userService.removeById(id);
         return Result.success("删除用户成功");
