@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hit.controller.commom.vo.Result;
 import com.hit.sys.entity.User;
+import com.hit.sys.entity.UserRole;
 import com.hit.sys.service.IUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
@@ -23,6 +26,7 @@ import java.util.Map;
  * @author Ruan
  * @since 2023-05-31
  */
+@Api(tags = {"用户接口列表"})     //swagger的注解，对 API 接口进行分组和分类
 @RestController
 @RequestMapping("/sys/user")
 @CrossOrigin       //跨域处理
@@ -33,12 +37,14 @@ public class UserController {
     @Autowired  //加密处理
     private PasswordEncoder passwordEncoder;
 
+    @ApiOperation("查询所有信息")
     @GetMapping("/all")
     public Result<List<User>> getAllUser(){
         List<User> list = userService.list();
         return Result.success(list,"查询成功");
     }
 
+    @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result<Map<String,Object>> login(@RequestBody User user){
         Map<String,Object> data = userService.login(user);
@@ -47,17 +53,6 @@ public class UserController {
         }
         return Result.fail(20002,"用户名或密码错误");
     }
-//@PostMapping("/login")
-//public Result<Map<String, Object>> login(@RequestBody UserLoginRequest request) {
-//    String username = request.getUsername();
-//    String password = request.getPassword();
-//
-//    Map<String, Object> data = userService.login(username, password);
-//    if (data != null) {
-//        return Result.success(data);
-//    }
-//    return Result.fail(20002, "用户名或密码错误");
-//}
 
 
     @GetMapping("/info")
@@ -70,6 +65,7 @@ public class UserController {
         return Result.fail(20003,"登录信息无效，请重新登录");
     }
 
+    @ApiOperation("登出方法")
     @PostMapping("/logout")
     public Result<?> logout(@RequestHeader("X-Token") String token){    //注意这个token的名字，需要前端token的响应
         userService.logout(token);
@@ -98,12 +94,25 @@ public class UserController {
 
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add")      //原始
     public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
         user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
         userService.save(user);
         return Result.success("新增用户成功");
     }
+
+//    @PostMapping("/add")
+//    public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
+//        userService.save(user);
+//
+//        UserRole userRole = new UserRole();
+//        userRole.setUserId(user.getUserId()); // 设置关联的user_id
+//        userRole.setRoleId(user.getRoleId()); // 设置关联的role_id
+//        userRoleService.save(userRole);
+//
+//        return Result.success("新增用户成功");
+//    }
 
     @PutMapping
     public Result<?> updateUser(@RequestBody User user){
