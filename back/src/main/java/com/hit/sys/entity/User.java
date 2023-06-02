@@ -54,6 +54,7 @@ public class User implements Serializable {
      */
     private String description;
 
+
     public Long getUserId() {
         return userId;
     }
@@ -116,4 +117,5 @@ public class User implements Serializable {
             ", description=" + description +
         "}";
     }
+
 }

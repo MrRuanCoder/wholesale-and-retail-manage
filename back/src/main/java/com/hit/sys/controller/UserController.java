@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hit.controller.commom.vo.Result;
 import com.hit.sys.entity.User;
+import com.hit.sys.entity.UserRole;
 import com.hit.sys.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -98,12 +99,25 @@ public class UserController {
 
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add")      //原始
     public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
         user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
         userService.save(user);
         return Result.success("新增用户成功");
     }
+
+//    @PostMapping("/add")
+//    public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
+//        userService.save(user);
+//
+//        UserRole userRole = new UserRole();
+//        userRole.setUserId(user.getUserId()); // 设置关联的user_id
+//        userRole.setRoleId(user.getRoleId()); // 设置关联的role_id
+//        userRoleService.save(userRole);
+//
+//        return Result.success("新增用户成功");
+//    }
 
     @PutMapping
     public Result<?> updateUser(@RequestBody User user){
