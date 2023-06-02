@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -19,6 +20,7 @@ import java.util.UUID;
  * @version 1.0.0 [版本信息]
  * @date 2023/06/02 17:19:56 [时间，这里是年/月/日 时:分:秒的格式]
  */
+@Component
 public class JwtUtil {
 
     // 有效期

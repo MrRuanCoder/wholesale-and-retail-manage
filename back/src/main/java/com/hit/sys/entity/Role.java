@@ -1,9 +1,11 @@
 package com.hit.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -33,6 +35,9 @@ public class Role implements Serializable {
      * 角色描述
      */
     private String remark;
+
+    @TableField(exist = false)  // MyBatis-Plus 框架提供的注解，用于标识实体类中的字段不是数据库表的列，即该字段不会映射到数据库表中
+    private List<Integer> menuIdList;
 
     public Long getRoleId() {
         return roleId;
