@@ -39,8 +39,13 @@ public class MySwaggerConfig {
     }
 
     private SecurityScheme securityScheme() {
-        //return new ApiKey("Authorization", "Authorization", "header");
-        return new ApiKey("X-Token", "X-Token", "header");
+        //第一个参数 "Authorization" 是该安全方案的名称，可以根据实际需要进行命名。
+        //第二个参数 "Authorization" 是在请求头中用于携带 Token 的字段名称。根据你的代码中的逻辑，这里使用的是 "Authorization" 字段。
+        //第三个参数 "header" 指定了 Token 是通过请求头的方式进行传递。也可以使用其他方式，如 "query" 表示通过查询参数传递 Token。
+        return new ApiKey("Authorization", "Authorization", "header");
+//        return new ApiKey("Authorization", "Bearer {token}", "header");
+
+//        return new ApiKey("X-Token", "X-Token", "header");
     }
 
     private SecurityContext securityContext() {
@@ -55,7 +60,7 @@ public class MySwaggerConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return Collections.singletonList(
-                new SecurityReference("X-Token", authorizationScopes));
+                new SecurityReference("Authorization", authorizationScopes));
     }
 
     private ApiInfo apiInfo() {

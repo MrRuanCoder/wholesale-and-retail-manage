@@ -67,7 +67,7 @@ public class UserController {
 
     @ApiOperation("登出方法")
     @PostMapping("/logout")
-    public Result<?> logout(@RequestHeader("X-Token") String token){    //注意这个token的名字，需要前端token的响应
+    public Result<?> logout(@RequestHeader("Authorization") String token){    //注意这个token的名字，需要前端token的响应
         userService.logout(token);
         return Result.success();
     }
