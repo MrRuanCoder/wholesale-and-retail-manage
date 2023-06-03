@@ -3,8 +3,10 @@ package com.hit.sys.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hit.controller.commom.vo.Result;
+import com.hit.sys.entity.Role;
 import com.hit.sys.entity.User;
 import com.hit.sys.entity.UserRole;
+import com.hit.sys.service.IUserRoleService;
 import com.hit.sys.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,10 +29,14 @@ import java.util.Map;
  * @since 2023-05-31
  */
 @Api(tags = {"用户接口列表"})     //swagger的注解，对 API 接口进行分组和分类
-@RestController
+@RestController     //方法返回的对象会被自动序列化为 JSON 或其他格式的响应数据
 @RequestMapping("/sys/user")
 @CrossOrigin       //跨域处理
 public class UserController {
+
+    @Autowired/////
+    private IUserRoleService userRoleService;
+
     @Autowired
     private IUserService userService;
 
@@ -47,6 +53,7 @@ public class UserController {
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result<Map<String,Object>> login(@RequestBody User user){
+
         Map<String,Object> data = userService.login(user);
         if(data != null){
             return Result.success(data);
@@ -96,26 +103,37 @@ public class UserController {
 
     }
 
-    @ApiOperation("新增用户")
-    @PostMapping("/add")      //原始
-    public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
-        user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
-        userService.save(user);
-        return Result.success("新增用户成功");
-    }
-
-//    @PostMapping("/add")
+//    @ApiOperation("新增用户")
+//    @PostMapping("/add")      //原始
 //    public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
 //        userService.save(user);
-//
-//        UserRole userRole = new UserRole();
-//        userRole.setUserId(user.getUserId()); // 设置关联的user_id
-//        userRole.setRoleId(user.getRoleId()); // 设置关联的role_id
-//        userRoleService.save(userRole);
-//
 //        return Result.success("新增用户成功");
 //    }
+
+    @ApiOperation("新增用户")
+    @PostMapping("/add")      //加上role
+    public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
+//        Long roleId = user.getRoleId();
+//
+//        user.setRoleId(null);//其实是roleid
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
+        userService.save(user);
+
+        Long userId = user.getUserId(); // 获取新增的user的id
+
+
+
+//        UserRole ur = new UserRole();
+//        ur.setUserId(userId);
+//        ur.setRoleId(roleId);
+//        userRoleService.save(ur);
+
+        return Result.success("新增用户成功");
+    }
+
+
 
     @ApiOperation("修改用户信息")
     @PutMapping

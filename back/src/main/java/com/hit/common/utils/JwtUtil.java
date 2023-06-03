@@ -35,6 +35,7 @@ public class JwtUtil {
         long expTime = currentTime+JWT_EXPIRE;
         // 构建jwt
         JwtBuilder builder = Jwts.builder()
+//                .claim()
                 .setId(UUID.randomUUID()+"")
                 .setSubject(JSON.toJSONString(data))
                 .setIssuer("system")

@@ -3,6 +3,8 @@ package com.hit.sys.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -15,7 +17,8 @@ import java.io.Serializable;
  */
 @TableName("t_user")
 public class User implements Serializable {
-
+//    @Transient      //持久化框架将忽略该字段，不会将其映射为数据库表的列
+//    private Long roleId;//////////////////
     private static final long serialVersionUID = 1L;
 
     /**
@@ -118,4 +121,11 @@ public class User implements Serializable {
         "}";
     }
 
+//    public Long getRoleId() {//////////////////////////////
+//        return roleId;
+//    }
+//
+//    public void setRoleId(Long rolename) {
+//        this.roleId=rolename;
+//    }
 }
