@@ -28,7 +28,7 @@ public class MyInterceptorConfig implements WebMvcConfigurer {
                         "/sys/user/info",
                         "/sys/user/logout",
                         "/sys/role/all",
-                        //                        "/sys/user/all",
+//                        "/sys/user/all",
                         //放行了swagger，不会被拦截
                         "/error",
                         "/swagger-ui/**",

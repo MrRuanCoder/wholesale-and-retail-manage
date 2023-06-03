@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2023-05-31
  */
 public interface UserRoleMapper extends BaseMapper<UserRole> {
-
+    Long getRoleIdByUserid(Long userId);
 }
