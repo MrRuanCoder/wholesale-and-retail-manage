@@ -26,7 +26,7 @@ public class JwtUtil {
     // 有效期
     private static final long JWT_EXPIRE = 30*60*1000L;  //半小时
     // 令牌秘钥
-    private static final String JWT_KEY = "123456";
+    public static final String JWT_KEY = "n9vOn7JVDhXrCSyI5FUt6s0FyPLtP9bZ";
 
     public  String createToken(Object data){        //创建jwt，
         // 当前时间

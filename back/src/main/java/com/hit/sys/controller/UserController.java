@@ -1,5 +1,6 @@
 package com.hit.sys.controller;
 
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hit.controller.commom.vo.Result;
@@ -8,6 +9,11 @@ import com.hit.sys.entity.User;
 import com.hit.sys.entity.UserRole;
 import com.hit.sys.service.IUserRoleService;
 import com.hit.sys.service.IUserService;
+import com.hit.sys.service.impl.UserRoleServiceImpl;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +21,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import com.hit.common.utils.JwtUtil;
+
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.hit.common.utils.JwtUtil.JWT_KEY;
+
 
 /**
  * <p>
@@ -35,7 +46,7 @@ import java.util.Map;
 public class UserController {
 
     @Autowired/////
-    private IUserRoleService userRoleService;
+    private UserRoleServiceImpl userRoleService;
 
     @Autowired
     private IUserService userService;
@@ -67,11 +78,54 @@ public class UserController {
     }
 
 
+//    @ApiOperation("用户登录")
+//    @PostMapping("/login")    //原始
+//    public Result<Map<String,Object>> login(@RequestBody User user){
+//
+//        Map<String,Object> data = userService.login(user);
+//        if(data != null){
+//            return Result.success(data);
+//        }
+//        return Result.fail(20002,"用户名或密码错误");
+//    }
+
+
+
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result<Map<String,Object>> login(@RequestBody User user){
 
         Map<String,Object> data = userService.login(user);
+
+        //要使用自己实现的JwtUtil方法
+        // 根据userid从userrole表中获取对应的roleid
+        JwtUtil jwtUtil = new JwtUtil();
+
+        //token解码后添加role相关数据
+        String token = (String) data.get("token");
+//        Claims claims1 = Jwts.parser().parseClaimsJws(token).getBody();
+//        Claims claims = jwtUtil.parseToken(token);
+//
+//        Map<String, Object> subClaims = claims.get("sub", Map.class);
+//        int userId = (int) subClaims.get("userId");
+        //一开始无userId，需要自己从token中提取
+        Claims claims = jwtUtil.parseToken(token);
+        String subString = claims.getSubject();
+        Map<String, Object> subClaims = JSON.parseObject(subString, Map.class);
+        int userId = (int) subClaims.get("userId");
+
+
+        Long roleid = userRoleService.getRoleIdByUserid((long) userId);
+
+//        Claims claims = jwtUtil.parseToken(token); // 使用您的JwtUtil类解析JWT
+
+        claims.put("roleId", roleid);
+
+        //重新生成新token，将添加了 role 数据的 Claims 对象进行签名
+        String newToken = jwtUtil.createToken(claims); // 使用您的JwtUtil类创建新的JWT
+
+        data.put("token", newToken);
+
         if(data != null){
             return Result.success(data);
         }
