@@ -65,6 +65,7 @@ public class UserController {
         return Result.fail(20003,"登录信息无效，请重新登录");
     }
 
+
     @ApiOperation("登出方法")
     @PostMapping("/logout")
     public Result<?> logout(@RequestHeader("Authorization") String token){    //注意这个token的名字，需要前端token的响应
@@ -72,6 +73,7 @@ public class UserController {
         return Result.success();
     }
 
+    @ApiOperation("查询方法")
     @GetMapping("/list")        //查询
     public Result<Map<String,Object>> getUserList(@RequestParam(value = "username",required = false) String username,
                                                   @RequestParam(value = "phone",required = false) String phone,
@@ -94,6 +96,7 @@ public class UserController {
 
     }
 
+    @ApiOperation("新增用户")
     @PostMapping("/add")      //原始
     public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
         user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
@@ -114,9 +117,10 @@ public class UserController {
 //        return Result.success("新增用户成功");
 //    }
 
+    @ApiOperation("修改用户信息")
     @PutMapping
     public Result<?> updateUser(@RequestBody User user){
-        user.setPassword(null);             //真需要和前端交互，或改为下面类似使用id的方法(看运行时的语句，就知道缺少了哪些东西（where后面
+        user.setPassword(null);             //需要和前端交互，或改为下面类似使用id的方法(看运行时的语句，就知道缺少了哪些东西（where后面
         userService.updateById(user);       //已传入的字段如果为空，该字段是不会更新的
         return Result.success("修改用户成功");
 //        if (user.getUserId() == null) {
@@ -126,12 +130,14 @@ public class UserController {
 //        return Result.success("修改用户成功");
     }
 
+    @ApiOperation("通过id查询用户数据")
     @GetMapping("/{id}")    //通过id查到用户数据
     public Result<User> getUserById(@PathVariable("id") Integer id){
         User user = userService.getById(id);
         return Result.success(user);
     }
 
+    @ApiOperation("通过id删除用户")
     @DeleteMapping("/{id}")
     public Result<User> deleteUserById(@PathVariable("id") Integer id){
         userService.removeById(id);

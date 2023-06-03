@@ -25,13 +25,18 @@ public class JwtValidateInterceptor implements HandlerInterceptor  {    //token�
     private JwtUtil jwtUtil;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token  = request.getHeader("Authorization");   //前端token规定可改
-        log.debug(request.getRequestURI() + "需要验证： " + token); //日志来打印输出信息
-//        if(token != null){
+        String token  = request.getHeader("Authorization");                     //前端token规定可改
+
+        log.debug(request.getRequestURI() + "需要验证： " + token);                  //日志来打印输出信息
+
         if (token != null && token.startsWith("Bearer ")) {
             // 移除 Bearer 头部
             token = token.substring(7);
+//            System.out.println(token);
+        }
 
+
+        if(token != null){
             try {
                 jwtUtil.parseToken(token);
                 log.debug(request.getRequestURI() + "验证通过");
