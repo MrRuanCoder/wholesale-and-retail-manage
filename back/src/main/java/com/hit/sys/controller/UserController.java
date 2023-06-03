@@ -43,12 +43,29 @@ public class UserController {
     @Autowired  //加密处理
     private PasswordEncoder passwordEncoder;
 
+//    @ApiOperation("查询所有信息")
+//    @GetMapping("/all")       //修改方法
+//    public Result<List<User>> getAllUser(){
+//        List<User> list = userService.list();
+//        return Result.success(list,"查询成功");
+//    }
+
     @ApiOperation("查询所有信息")
     @GetMapping("/all")
     public Result<List<User>> getAllUser(){
         List<User> list = userService.list();
+
+        // 遍历用户列表
+        for (User user : list) {
+            // 根据userid从userrole表中获取对应的roleid
+            Long roleid = userRoleService.getRoleIdByUserid(user.getUserId());
+            // 将roleid设置到对应的User对象中
+            user.setRoleId(roleid);
+        }
+
         return Result.success(list,"查询成功");
     }
+
 
     @ApiOperation("用户登录")
     @PostMapping("/login")
@@ -114,9 +131,9 @@ public class UserController {
     @ApiOperation("新增用户")
     @PostMapping("/add")      //加上role
     public Result<?> addUser(@RequestBody User user){   //HTTP请求的请求体解析为一个User的java对象
-//        Long roleId = user.getRoleId();
-//
-//        user.setRoleId(null);//其实是roleid
+        Long roleId = user.getRoleId();
+
+        user.setRoleId(null);//其实是roleid
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
         userService.save(user);
@@ -125,10 +142,10 @@ public class UserController {
 
 
 
-//        UserRole ur = new UserRole();
-//        ur.setUserId(userId);
-//        ur.setRoleId(roleId);
-//        userRoleService.save(ur);
+        UserRole ur = new UserRole();
+        ur.setUserId(userId);
+        ur.setRoleId(roleId);
+        userRoleService.save(ur);
 
         return Result.success("新增用户成功");
     }
