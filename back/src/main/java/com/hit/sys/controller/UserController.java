@@ -97,6 +97,8 @@ public class UserController {
 
         Map<String,Object> data = userService.login(user);
 
+        if(data == null) return Result.fail(20002,"用户名或密码错误");
+
         //要使用自己实现的JwtUtil方法
         // 根据userid从userrole表中获取对应的roleid
         JwtUtil jwtUtil = new JwtUtil();
@@ -130,6 +132,7 @@ public class UserController {
             return Result.success(data);
         }
         return Result.fail(20002,"用户名或密码错误");
+
     }
 
 
@@ -189,7 +192,7 @@ public class UserController {
 
         user.setRoleId(null);//其实是roleid
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));   //密码加密
         userService.save(user);
 
         Long userId = user.getUserId(); // 获取新增的user的id
@@ -201,15 +204,20 @@ public class UserController {
         ur.setRoleId(roleId);
         userRoleService.save(ur);
 
-        return Result.success("新增用户成功");
+        Map<String, Object> data = new HashMap<>();
+        data.put("userId", userId);
+
+//        return Result.success("新增用户成功");
+        return Result.success(data,"新增用户成功");
     }
+
 
 
 
     @ApiOperation("修改用户信息")
     @PutMapping
     public Result<?> updateUser(@RequestBody User user){
-        user.setPassword(null);             //需要和前端交互，或改为下面类似使用id的方法(看运行时的语句，就知道缺少了哪些东西（where后面
+//        user.setPassword(null);             //需要和前端交互，或改为下面类似使用id的方法(看运行时的语句，就知道缺少了哪些东西（where后面
         userService.updateById(user);       //已传入的字段如果为空，该字段是不会更新的
         return Result.success("修改用户成功");
 //        if (user.getUserId() == null) {
