@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hit.sys.mapper.UserRoleMapper">
+
+    <select id="getRoleIdByUserid" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT
+            a.`role_id`
+        FROM t_user_role a
+        WHERE
+            a.user_id = #{userId}
+
+    </select>
+</mapper>
