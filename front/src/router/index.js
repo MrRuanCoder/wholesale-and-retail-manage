@@ -16,8 +16,13 @@ import Purchaser from "../pages/Purchaser";
 
 const router = [
   {
+    path: "*",
+    element: <Navigate to="/login" />,
+  },
+  {
     path: "/login",
     element: <Login />,
+    auth: true,
   },
   {
     path: "/",
@@ -147,10 +152,6 @@ const router = [
         element: <div />,
       },
     ],
-  },
-  {
-    path: "*",
-    element: <h1>404NOT FOUND</h1>,
   },
 ];
 

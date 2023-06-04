@@ -5,8 +5,11 @@ import { useNavigate } from "react-router-dom";
 import service from "../../utils/request";
 import { persistor } from "../../index";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setLoginState } from "../../redux/Slices/AuthSlice";
 
 export default function Header() {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -29,6 +32,7 @@ export default function Header() {
           persistor.purge().then(() => {
             localStorage.removeItem("token");
             toast.success("退出成功");
+            dispatch(setLoginState(false));
             navigate("/login");
           });
         } else throw new Error(res.message);
