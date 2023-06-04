@@ -97,6 +97,8 @@ public class UserController {
 
         Map<String,Object> data = userService.login(user);
 
+        if(data == null) return Result.fail(20002,"用户名或密码错误");
+
         //要使用自己实现的JwtUtil方法
         // 根据userid从userrole表中获取对应的roleid
         JwtUtil jwtUtil = new JwtUtil();
@@ -130,6 +132,7 @@ public class UserController {
             return Result.success(data);
         }
         return Result.fail(20002,"用户名或密码错误");
+
     }
 
 
