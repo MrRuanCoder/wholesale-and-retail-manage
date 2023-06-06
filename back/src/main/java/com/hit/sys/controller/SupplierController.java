@@ -35,21 +35,21 @@ public class SupplierController {
 
     @ApiOperation("新增供应商")
     @PostMapping("/add")
-    public Result<?> addUser(@RequestBody Supplier supplier){   //HTTP请求的请求体解析为一个User的java对象
+    public Result<?> addSupplier(@RequestBody Supplier supplier){   //HTTP请求的请求体解析为一个User的java对象
         supplierService.save(supplier);
         return Result.success("新增供应商成功");
     }
 
     @ApiOperation("修改供应商信息")
     @PutMapping
-    public Result<?> updateUser(@RequestBody Supplier supplier){
+    public Result<?> updateSupplier(@RequestBody Supplier supplier){
         supplierService.updateById(supplier);       //已传入的字段如果为空，该字段是不会更新的
         return Result.success("修改供应商成功");
     }
 
     @ApiOperation("通过id删除用户")
     @DeleteMapping("/{name}")
-    public Result<User> deleteUserById(@PathVariable("name") String name){
+    public Result<User> deleteSupplierByName(@PathVariable("name") String name){
         supplierService.deleteByName(name);
         return Result.success("删除用户成功");
     }
