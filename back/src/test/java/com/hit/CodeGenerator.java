@@ -20,7 +20,7 @@ public class CodeGenerator {
         String password = "";
         String moduleName = "sys";
         String mapperLocation = "D:\\CS\\projects\\SPPM_lab\\SPPM_lab\\wholesale-and-retail-manage\\back\\src\\main\\resources\\mapper\\" + moduleName;
-        String tables = "t_supplier";
+        String tables = "t_goods,t_storage,t_storage_goods";
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> {
                     builder.author("Ruan") // 设置作者
