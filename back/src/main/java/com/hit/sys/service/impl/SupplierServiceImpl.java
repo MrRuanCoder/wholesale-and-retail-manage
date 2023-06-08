@@ -26,4 +26,10 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         remove(new QueryWrapper<Supplier>().allEq(columnMap));
     }
 
+    @Override
+    public Supplier getByName(String name) {
+        Supplier supplier = getBaseMapper().selectById(name);       //selectById为主键选择方法
+        return supplier;
+        }
+
 }

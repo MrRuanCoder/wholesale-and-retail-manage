@@ -22,6 +22,7 @@ import java.util.List;
  */
 @RestController     //必须要改成这个，否则解析器无法找到视图报500
 @RequestMapping("/sys/supplier")
+@CrossOrigin
 public class SupplierController {
     @Autowired
     private SupplierServiceImpl supplierService;
@@ -47,11 +48,18 @@ public class SupplierController {
         return Result.success("修改供应商成功");
     }
 
+    @ApiOperation("通过name查询用户数据")
+    @GetMapping("/{supplierName}")    //通过id查到供应商数据
+    public Result<Supplier> getUserById(@PathVariable("supplierName") String name){
+        Supplier supplier = supplierService.getByName(name);
+        return Result.success(supplier);
+    }
+
     @ApiOperation("通过id删除用户")
     @DeleteMapping("/{name}")
     public Result<User> deleteSupplierByName(@PathVariable("name") String name){
         supplierService.deleteByName(name);
-        return Result.success("删除用户成功");
+        return Result.success("删除供应商成功");
     }
 
 }

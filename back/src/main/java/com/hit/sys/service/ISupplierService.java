@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISupplierService extends IService<Supplier> {
     public void deleteByName(String name);
+
+    public Supplier getByName(String name);
 }

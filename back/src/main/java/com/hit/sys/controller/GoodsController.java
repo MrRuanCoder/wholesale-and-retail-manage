@@ -47,6 +47,7 @@ public class GoodsController {
         return Result.success("修改商品成功");
     }
 
+
 //    @ApiOperation("通过id删除用户")
 //    @DeleteMapping("/{name}")
 //    public Result<User> deleteUserById(@PathVariable("name") String name){
