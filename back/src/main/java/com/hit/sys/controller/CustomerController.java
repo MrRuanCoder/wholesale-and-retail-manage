@@ -2,10 +2,7 @@ package com.hit.sys.controller;
 
 import com.hit.controller.commom.vo.Result;
 import com.hit.sys.entity.Customer;
-import com.hit.sys.entity.Goods;
-import com.hit.sys.entity.User;
 import com.hit.sys.service.impl.CustomerServiceImpl;
-import com.hit.sys.service.impl.GoodsServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +16,10 @@ import java.util.List;
  * </p>
  *
  * @author Ruan
- * @since 2023-06-08
+ * @since 2023-06-10
  */
 @RestController
 @RequestMapping("/sys/customer")
-@CrossOrigin
 public class CustomerController {
     @Autowired
     private CustomerServiceImpl customerService;
@@ -39,28 +35,28 @@ public class CustomerController {
     @PostMapping("/add")
     public Result<?> addCustomer(@RequestBody Customer customer){   //HTTP请求的请求体解析为一个User的java对象
         customerService.save(customer);
-        return Result.success("新增商品成功");
+        return Result.success("新增客户成功");
     }
 
-    @ApiOperation("修改商品信息")
+    @ApiOperation("修改客户信息")
     @PutMapping
     public Result<?> updateCustomer(@RequestBody Customer customer){
         customerService.updateById(customer);
-        return Result.success("修改商品成功");
+        return Result.success("修改客户成功");
     }
 
 
-    @ApiOperation("通过id查询用户数据")
+    @ApiOperation("通过id查询客户数据")
     @GetMapping("/{id}")    //通过id查到用户数据
     public Result<Customer> getUserById(@PathVariable("id") Integer id){
         Customer customer = customerService.getById(id);
         return Result.success(customer);
     }
 
-    @ApiOperation("通过id删除用户")
+    @ApiOperation("通过id删除客户")
     @DeleteMapping("/{id}")
     public Result<Customer> deleteUserById(@PathVariable("id") Integer id){
         customerService.removeById(id);
-        return Result.success("删除用户成功");
+        return Result.success("删除客户成功");
     }
 }

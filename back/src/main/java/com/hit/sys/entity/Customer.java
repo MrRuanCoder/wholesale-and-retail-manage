@@ -11,7 +11,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Ruan
- * @since 2023-06-08
+ * @since 2023-06-10
  */
 @TableName("t_customer")
 public class Customer implements Serializable {
@@ -55,7 +55,16 @@ public class Customer implements Serializable {
     private Long points;
 
     private Long balance;
+
+    /**
+     * 地址
+     */
     private String address;
+
+    /**
+     * 邮箱
+     */
+    private String email;
 
     public Long getCustomerId() {
         return customerId;
@@ -113,6 +122,20 @@ public class Customer implements Serializable {
     public void setBalance(Long balance) {
         this.balance = balance;
     }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
     public String toString() {
@@ -125,11 +148,8 @@ public class Customer implements Serializable {
             ", vip=" + vip +
             ", points=" + points +
             ", balance=" + balance +
-                ", address=" + address +
+            ", address=" + address +
+            ", email=" + email +
         "}";
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }
