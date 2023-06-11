@@ -23,20 +23,21 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/storage")
+@CrossOrigin
 public class StorageController {
     @Autowired
     private StorageServiceImpl storageService;
 
     @ApiOperation("查询所有信息")
     @GetMapping("/all")
-    public Result<List<Storage>> getAllSupplier(){
+    public Result<List<Storage>> getAllStorage(){
         List<Storage> list = storageService.list();
         return Result.success(list,"查询成功");
     }
 
     @ApiOperation("新增storage")
     @PostMapping("/add")
-    public Result<?> addUser(@RequestBody Storage supplier){   //HTTP请求的请求体解析为一个User的java对象
+    public Result<?> addStorage(@RequestBody Storage supplier){   //HTTP请求的请求体解析为一个User的java对象
         storageService.save(supplier);
         return Result.success("新增供应商成功");
     }

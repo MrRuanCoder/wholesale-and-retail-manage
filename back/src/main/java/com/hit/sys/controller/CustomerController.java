@@ -20,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/customer")
+@CrossOrigin
 public class CustomerController {
     @Autowired
     private CustomerServiceImpl customerService;
@@ -48,14 +49,14 @@ public class CustomerController {
 
     @ApiOperation("通过id查询客户数据")
     @GetMapping("/{id}")    //通过id查到用户数据
-    public Result<Customer> getUserById(@PathVariable("id") Integer id){
+    public Result<Customer> getCustomerById(@PathVariable("id") Integer id){
         Customer customer = customerService.getById(id);
         return Result.success(customer);
     }
 
     @ApiOperation("通过id删除客户")
     @DeleteMapping("/{id}")
-    public Result<Customer> deleteUserById(@PathVariable("id") Integer id){
+    public Result<Customer> deleteCustomerById(@PathVariable("id") Integer id){
         customerService.removeById(id);
         return Result.success("删除客户成功");
     }

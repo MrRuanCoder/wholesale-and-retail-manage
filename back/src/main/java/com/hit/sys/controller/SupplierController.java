@@ -55,7 +55,7 @@ public class SupplierController {
         return Result.success(supplier);
     }
 
-    @ApiOperation("通过id删除用户")
+    @ApiOperation("通过name删除用户")
     @DeleteMapping("/{name}")
     public Result<User> deleteSupplierByName(@PathVariable("name") String name){
         supplierService.deleteByName(name);

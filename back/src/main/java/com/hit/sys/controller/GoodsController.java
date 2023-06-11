@@ -28,7 +28,7 @@ public class GoodsController {
 
     @ApiOperation("查询所有信息")
     @GetMapping("/all")
-    public Result<List<Goods>> getAllSupplier(){
+    public Result<List<Goods>> getAllGoods(){
         List<Goods> list = goodsService.list();
         return Result.success(list,"查询成功");
     }
