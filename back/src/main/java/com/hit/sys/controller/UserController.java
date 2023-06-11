@@ -231,6 +231,13 @@ public class UserController {
     @GetMapping("/{id}")    //通过id查到用户数据
     public Result<User> getUserById(@PathVariable("id") Integer id){
         User user = userService.getById(id);
+
+            // 根据userid从userrole表中获取对应的roleid
+            Long roleid = userRoleService.getRoleIdByUserid(user.getUserId());
+            // 将roleid设置到对应的User对象中
+            user.setRoleId(roleid);
+
+
         return Result.success(user);
     }
 
