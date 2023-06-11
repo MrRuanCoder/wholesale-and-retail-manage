@@ -81,7 +81,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<User> deleteUserById(@PathVariable("id") Integer id){
+    public Result<User> deleteRoleById(@PathVariable("id") Integer id){
         roleService.removeById(id);
         return Result.success("删除角色成功");
     }
