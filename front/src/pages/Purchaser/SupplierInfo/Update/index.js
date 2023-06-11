@@ -8,17 +8,15 @@ import {
   TableRow,
   TableCell,
   Button,
-  Select,
   TableBody,
-  MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import service from "../../../../utils/request";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { setAddFlag } from "../../../../redux/Slices/PurchaserSlice";
+import { setUpdateFlag } from "../../../../redux/Slices/PurchaserSlice";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "& td, & th": {
@@ -26,43 +24,55 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const options = [
-  { label: "店长", id: 2 },
-  { label: "采购员", id: 7 },
-  { label: "供应商", id: 6 },
-  { label: "销售员", id: 8 },
-  { label: "客户", id: 5 },
-  { label: "仓库管理员", id: 9 },
-];
+export default function Update() {
+  const [searchParams] = useSearchParams();
+  const name = searchParams.get("supplierName");
 
-export default function AddUser() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [supplierName, setSupplierName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [roleId, setRoleId] = useState(null);
+  const [type, setType] = useState("");
   const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    service
+      .get(`/sys/supplier/${name}`)
+      .then(({ data: res }) => {
+        if (res.code === 20000) {
+          const { supplierName, phone, email, address, type, description } =
+            res.data;
+          setSupplierName(supplierName);
+          setPhone(phone);
+          setEmail(email);
+          setAddress(address);
+          setType(type);
+          setDescription(description);
+        } else throw new Error(res.message);
+      })
+      .catch((e) => {
+        toast.error("获取供应商信息失败");
+      });
+  }, [name]);
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const handleAdd = () => {
+  const handleUpdate = () => {
     service
-      .post("/sys/user/add", {
-        username,
-        password,
+      .put("/sys/supplier", {
+        supplierName,
         phone,
         email,
         address,
-        roleId,
+        type,
         description,
       })
       .then(({ data: res }) => {
         if (res.code === 20000) {
-          dispatch(setAddFlag(true));
-          toast.success("添加成功");
+          dispatch(setUpdateFlag(true));
+          toast.success("修改成功");
           navigate("../overview");
         } else throw new Error(res.message);
       })
@@ -74,18 +84,16 @@ export default function AddUser() {
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (
-      username === "" ||
-      password === "" ||
+      supplierName === "" ||
       phone === "" ||
       email === "" ||
-      email === "" ||
+      type === "" ||
       address === "" ||
-      roleId === null ||
       description === ""
     )
       setDisabled(true);
     else setDisabled(false);
-  }, [username, password, phone, email, address, roleId, description]);
+  }, [supplierName, phone, email, type, address, description]);
 
   return (
     <Stack mx={"20px"}>
@@ -97,34 +105,21 @@ export default function AddUser() {
           bgcolor: "#F0F0F0",
         }}
       >
-        添加用户
+        修改用户
       </Typography>
       <TableContainer>
         <Table sx={{ maxWidth: 1000, marginX: "auto" }} size="small">
           <TableBody>
             <StyledTableRow>
               <TableCell>
-                <Typography>用户名</Typography>
+                <Typography>供应商名称</Typography>
               </TableCell>
               <TableCell align="right">
                 <TextField
-                  placeholder="请输入用户名"
+                  disabled
                   fullWidth
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </TableCell>
-            </StyledTableRow>
-            <StyledTableRow>
-              <TableCell>
-                <Typography>密码</Typography>
-              </TableCell>
-              <TableCell align="right">
-                <TextField
-                  placeholder="请输入密码"
-                  fullWidth
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={supplierName}
+                  onChange={(e) => setSupplierName(e.target.value)}
                 />
               </TableCell>
             </StyledTableRow>
@@ -169,20 +164,15 @@ export default function AddUser() {
             </StyledTableRow>
             <StyledTableRow>
               <TableCell>
-                <Typography>角色</Typography>
+                <Typography>类型</Typography>
               </TableCell>
-              <TableCell align="left">
-                <Select
-                  value={roleId}
-                  onChange={(e) => setRoleId(e.target.value)}
-                  sx={{ width: 200 }}
-                >
-                  {options.map((item) => (
-                    <MenuItem value={item.id} key={item.id}>
-                      {item.label}
-                    </MenuItem>
-                  ))}
-                </Select>
+              <TableCell align="right">
+                <TextField
+                  placeholder="请输入商品类型"
+                  fullWidth
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                />
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
@@ -210,8 +200,8 @@ export default function AddUser() {
         <Button variant="contained" onClick={() => navigate("../")}>
           返回
         </Button>
-        <Button variant="contained" disabled={disabled} onClick={handleAdd}>
-          添加
+        <Button variant="contained" disabled={disabled} onClick={handleUpdate}>
+          修改
         </Button>
       </Box>
     </Stack>

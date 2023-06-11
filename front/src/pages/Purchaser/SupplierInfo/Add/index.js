@@ -8,12 +8,10 @@ import {
   TableRow,
   TableCell,
   Button,
-  Select,
   TableBody,
-  MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import service from "../../../../utils/request";
 import { useDispatch } from "react-redux";
@@ -26,22 +24,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const options = [
-  { label: "店长", id: 2 },
-  { label: "采购员", id: 7 },
-  { label: "供应商", id: 6 },
-  { label: "销售员", id: 8 },
-  { label: "客户", id: 5 },
-  { label: "仓库管理员", id: 9 },
-];
-
-export default function AddUser() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Add() {
+  const [supplierName, setSupplierName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [roleId, setRoleId] = useState(null);
+  const [type, setType] = useState("");
   const [description, setDescription] = useState("");
 
   const navigate = useNavigate();
@@ -50,13 +38,12 @@ export default function AddUser() {
 
   const handleAdd = () => {
     service
-      .post("/sys/user/add", {
-        username,
-        password,
+      .post("/sys/supplier/add", {
+        supplierName,
         phone,
         email,
         address,
-        roleId,
+        type,
         description,
       })
       .then(({ data: res }) => {
@@ -74,18 +61,16 @@ export default function AddUser() {
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (
-      username === "" ||
-      password === "" ||
+      supplierName === "" ||
       phone === "" ||
       email === "" ||
-      email === "" ||
+      type === "" ||
       address === "" ||
-      roleId === null ||
       description === ""
     )
       setDisabled(true);
     else setDisabled(false);
-  }, [username, password, phone, email, address, roleId, description]);
+  }, [supplierName, phone, email, type, address, description]);
 
   return (
     <Stack mx={"20px"}>
@@ -104,27 +89,14 @@ export default function AddUser() {
           <TableBody>
             <StyledTableRow>
               <TableCell>
-                <Typography>用户名</Typography>
+                <Typography>供应商名称</Typography>
               </TableCell>
               <TableCell align="right">
                 <TextField
-                  placeholder="请输入用户名"
+                  placeholder="请输入供应商名称"
                   fullWidth
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </TableCell>
-            </StyledTableRow>
-            <StyledTableRow>
-              <TableCell>
-                <Typography>密码</Typography>
-              </TableCell>
-              <TableCell align="right">
-                <TextField
-                  placeholder="请输入密码"
-                  fullWidth
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={supplierName}
+                  onChange={(e) => setSupplierName(e.target.value)}
                 />
               </TableCell>
             </StyledTableRow>
@@ -169,20 +141,15 @@ export default function AddUser() {
             </StyledTableRow>
             <StyledTableRow>
               <TableCell>
-                <Typography>角色</Typography>
+                <Typography>类型</Typography>
               </TableCell>
-              <TableCell align="left">
-                <Select
-                  value={roleId}
-                  onChange={(e) => setRoleId(e.target.value)}
-                  sx={{ width: 200 }}
-                >
-                  {options.map((item) => (
-                    <MenuItem value={item.id} key={item.id}>
-                      {item.label}
-                    </MenuItem>
-                  ))}
-                </Select>
+              <TableCell align="right">
+                <TextField
+                  placeholder="请输入商品类型"
+                  fullWidth
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                />
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>

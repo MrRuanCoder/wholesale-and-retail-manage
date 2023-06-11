@@ -8,17 +8,17 @@ import {
   TableRow,
   TableCell,
   Button,
-  Select,
   TableBody,
+  Select,
   MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import service from "../../../../utils/request";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { setAddFlag } from "../../../../redux/Slices/PurchaserSlice";
+import { useDispatch } from "react-redux";
+import { setAddFlag } from "../../../../redux/Slices/ShopKeeperSlice";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "& td, & th": {
@@ -26,23 +26,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const options = [
-  { label: "店长", id: 2 },
-  { label: "采购员", id: 7 },
-  { label: "供应商", id: 6 },
-  { label: "销售员", id: 8 },
-  { label: "客户", id: 5 },
-  { label: "仓库管理员", id: 9 },
-];
-
-export default function AddUser() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Add() {
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
+  const [type, setType] = useState("");
   const [address, setAddress] = useState("");
-  const [roleId, setRoleId] = useState(null);
-  const [description, setDescription] = useState("");
 
   const navigate = useNavigate();
 
@@ -50,14 +39,12 @@ export default function AddUser() {
 
   const handleAdd = () => {
     service
-      .post("/sys/user/add", {
-        username,
-        password,
+      .post("/sys/customer/add", {
+        name,
         phone,
-        email,
         address,
-        roleId,
-        description,
+        gender,
+        type,
       })
       .then(({ data: res }) => {
         if (res.code === 20000) {
@@ -74,18 +61,15 @@ export default function AddUser() {
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (
-      username === "" ||
-      password === "" ||
+      name === "" ||
       phone === "" ||
-      email === "" ||
-      email === "" ||
-      address === "" ||
-      roleId === null ||
-      description === ""
+      gender === "" ||
+      type === "" ||
+      address === ""
     )
       setDisabled(true);
     else setDisabled(false);
-  }, [username, password, phone, email, address, roleId, description]);
+  }, [name, phone, gender, type, address]);
 
   return (
     <Stack mx={"20px"}>
@@ -104,27 +88,14 @@ export default function AddUser() {
           <TableBody>
             <StyledTableRow>
               <TableCell>
-                <Typography>用户名</Typography>
+                <Typography>姓名</Typography>
               </TableCell>
               <TableCell align="right">
                 <TextField
-                  placeholder="请输入用户名"
+                  placeholder="请输入姓名"
                   fullWidth
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </TableCell>
-            </StyledTableRow>
-            <StyledTableRow>
-              <TableCell>
-                <Typography>密码</Typography>
-              </TableCell>
-              <TableCell align="right">
-                <TextField
-                  placeholder="请输入密码"
-                  fullWidth
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </TableCell>
             </StyledTableRow>
@@ -143,19 +114,6 @@ export default function AddUser() {
             </StyledTableRow>
             <StyledTableRow>
               <TableCell>
-                <Typography>邮箱</Typography>
-              </TableCell>
-              <TableCell align="right">
-                <TextField
-                  placeholder="请输入邮箱"
-                  fullWidth
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </TableCell>
-            </StyledTableRow>
-            <StyledTableRow>
-              <TableCell>
                 <Typography>地址</Typography>
               </TableCell>
               <TableCell align="right">
@@ -169,33 +127,32 @@ export default function AddUser() {
             </StyledTableRow>
             <StyledTableRow>
               <TableCell>
-                <Typography>角色</Typography>
+                <Typography>性别</Typography>
               </TableCell>
               <TableCell align="left">
                 <Select
-                  value={roleId}
-                  onChange={(e) => setRoleId(e.target.value)}
-                  sx={{ width: 200 }}
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  sx={{ width: "80px" }}
                 >
-                  {options.map((item) => (
-                    <MenuItem value={item.id} key={item.id}>
-                      {item.label}
-                    </MenuItem>
-                  ))}
+                  <MenuItem value="男">男</MenuItem>
+                  <MenuItem value="女">女</MenuItem>
                 </Select>
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
               <TableCell>
-                <Typography>描述</Typography>
+                <Typography>类型</Typography>
               </TableCell>
-              <TableCell align="right">
-                <TextField
-                  placeholder="输入你的描述"
-                  fullWidth
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+              <TableCell align="left">
+                <Select
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  sx={{ width: "130px" }}
+                >
+                  <MenuItem value="零售客户">零售客户</MenuItem>
+                  <MenuItem value="批发客户">批发客户</MenuItem>
+                </Select>
               </TableCell>
             </StyledTableRow>
           </TableBody>

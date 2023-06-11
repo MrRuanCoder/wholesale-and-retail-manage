@@ -17,6 +17,9 @@ const AuthRoute = ({ children, auth }) => {
   const role = useSelector((state) => state.auth.role);
   const location = useLocation();
 
+  // 开发时
+  // return children;
+
   if (auth) {
     if (isLogin) return <Navigate to={pathMap[role]} />;
     else return children;

@@ -13,12 +13,16 @@ import {
   persistReducer,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import userReducer from "./Slices/UserSlice";
+import adminReducer from "./Slices/AdminSlice";
 import authReducer from "./Slices/AuthSlice";
+import shopKeeperReducer from "./Slices/ShopKeeperSlice.js";
+import purchaserReducer from "./Slices/PurchaserSlice";
 
 const reducers = combineReducers({
-  users: userReducer,
+  admin: adminReducer,
   auth: authReducer,
+  shopKeeper: shopKeeperReducer,
+  purchaser: purchaserReducer,
 });
 
 const persistConfig = {

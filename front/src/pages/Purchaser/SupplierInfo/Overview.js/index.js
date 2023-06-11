@@ -14,10 +14,10 @@ import {
   IconButton,
   Checkbox,
   Dialog,
+  DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
-  DialogTitle,
   Select,
   MenuItem,
 } from "@mui/material";
@@ -32,13 +32,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import service from "../../../../utils/request";
+import { toast } from "react-toastify";
 import {
-  setAddFlag,
-  setUpdateFlag,
   selectAddFlag,
   selectUpdateFlag,
-} from "../../../../redux/Slices/AdminSlice";
-import { toast } from "react-toastify";
+  setAddFlag,
+  setUpdateFlag,
+} from "../../../../redux/Slices/PurchaserSlice";
 
 function createNumArray(start, end) {
   const res = [];
@@ -48,16 +48,6 @@ function createNumArray(start, end) {
   return res;
 }
 
-const roleMap = {
-  1: "系统管理员",
-  2: "店长",
-  5: "客户",
-  6: "供货商",
-  7: "采购员",
-  8: "销售员",
-  9: "仓库管理员",
-};
-
 export default function Overview() {
   const [list, setList] = useState([]);
   const addflag = useSelector(selectAddFlag);
@@ -66,7 +56,7 @@ export default function Overview() {
 
   useEffect(() => {
     service
-      .get("/sys/user/all")
+      .get("/sys/supplier/all")
       .then(({ data: res }) => {
         if (res.code === 20000) {
           setList(res.data.map((obj) => ({ ...obj, checked: false })));
@@ -77,10 +67,9 @@ export default function Overview() {
       .catch((e) => {
         toast.error("获取用户列表失败");
       });
-  }, [dispatch, addflag, updateFlag]);
+  }, [addflag, updateFlag, dispatch]);
 
   const navigate = useNavigate();
-
   const [itemPerPage, setItemPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [rows, setRows] = useState([]);
@@ -132,10 +121,10 @@ export default function Overview() {
     );
   };
 
-  const handleChecked = (userId) => (e) => {
+  const handleChecked = (supplierName) => (e) => {
     setList((list) =>
       list.map((item) => {
-        if (item.userId === userId) {
+        if (item.supplierName === supplierName) {
           return { ...item, checked: e.target.checked };
         } else return item;
       })
@@ -156,11 +145,15 @@ export default function Overview() {
     const delItems = rows.filter((row) => row.checked);
     try {
       delItems.forEach((item) => {
-        service.delete(`/sys/user/${item.userId}`).then(({ data: res }) => {
-          if (res.code === 20000) {
-            setList((list) => list.filter((val) => val.userId !== item.userId));
-          } else throw new Error(res.message);
-        });
+        service
+          .delete(`/sys/supplier/${item.supplierName}`)
+          .then(({ data: res }) => {
+            if (res.code === 20000) {
+              setList((list) =>
+                list.filter((val) => val.supplierName !== item.supplierName)
+              );
+            } else throw new Error(res.message);
+          });
       });
       toast.success("删除成功");
     } catch (e) {
@@ -174,16 +167,18 @@ export default function Overview() {
 
   const search = () => {
     service
-      .get("/sys/user/all")
+      .get("/sys/supplier/all")
       .then(({ data: res }) => {
         if (res.code === 20000) {
           setList(
-            res.data.filter((item) => item.username.startsWith(filteredName))
+            res.data.filter((item) =>
+              item.supplierName.startsWith(filteredName)
+            )
           );
         } else throw new Error(res.message);
       })
       .catch((e) => {
-        toast.error("获取用户列表失败");
+        toast.error("获取供应商列表失败");
       });
   };
 
@@ -191,10 +186,10 @@ export default function Overview() {
     <Stack>
       <Box>
         <Typography component={"span"} fontSize={"16px"} mx={"20px"}>
-          用户名
+          名称
         </Typography>
         <TextField
-          placeholder="请输入用户名"
+          placeholder="请输入供应商名称"
           value={filteredName}
           onChange={(e) => setFilteredName(e.target.value)}
           sx={{
@@ -299,13 +294,11 @@ export default function Overview() {
                   onChange={handleCheckedAll}
                 />
               </TableCell>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="center">用户名</TableCell>
-              {/* <TableCell align="center">密码</TableCell> */}
-              <TableCell align="center">职位</TableCell>
+              <TableCell align="center">名称</TableCell>
               <TableCell align="center">电话</TableCell>
               <TableCell align="center">邮箱</TableCell>
               <TableCell align="center">地址</TableCell>
+              <TableCell align="center">货品类型</TableCell>
               <TableCell align="center">描述</TableCell>
               <TableCell align="center">修改信息</TableCell>
             </TableRow>
@@ -313,27 +306,27 @@ export default function Overview() {
           <TableBody>
             {rows.map((row) => (
               <TableRow
-                key={row.userId}
+                key={row.supplierName}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell>
                   <Checkbox
                     size="small"
                     checked={row.checked}
-                    onChange={handleChecked(row.userId)}
+                    onChange={handleChecked(row.supplierName)}
                   />
                 </TableCell>
-                <TableCell align="center">{row.userId}</TableCell>
-                <TableCell align="center">{row.username}</TableCell>
-                {/* <TableCell align="center">{row.password}</TableCell> */}
-                <TableCell align="center">{roleMap[row.roleId]}</TableCell>
+                <TableCell align="center">{row.supplierName}</TableCell>
                 <TableCell align="center">{row.phone}</TableCell>
                 <TableCell align="center">{row.email}</TableCell>
                 <TableCell align="center">{row.address}</TableCell>
+                <TableCell align="center">{row.type}</TableCell>
                 <TableCell align="center">{row.description}</TableCell>
                 <TableCell align="center">
                   <IconButton
-                    onClick={() => navigate(`../update?userId=${row.userId}`)}
+                    onClick={() =>
+                      navigate(`../update?supplierName=${row.supplierName}`)
+                    }
                   >
                     <Edit />
                   </IconButton>

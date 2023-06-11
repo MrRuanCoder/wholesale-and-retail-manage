@@ -3,7 +3,7 @@ import axios from "axios";
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 
 const service = axios.create({
-  baseURL: "http://172.20.25.82:9999/",
+  baseURL: "http://172.20.49.166:9999/",
 });
 
 service.interceptors.request.use((config) => {

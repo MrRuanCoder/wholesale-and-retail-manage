@@ -13,6 +13,14 @@ import Customer from "../pages/Customer";
 import Salesman from "../pages/Salesman";
 import Supplier from "../pages/Supplier";
 import Purchaser from "../pages/Purchaser";
+import UserInfo from "../pages/Shopkeeper/UserInfo";
+import UserInfoOverview from "../pages/Shopkeeper/UserInfo/Overview";
+import UserInfoAdd from "../pages/Shopkeeper/UserInfo/Add";
+import UserInfoUpdate from "../pages/Shopkeeper/UserInfo/Update";
+import SupplierInfo from "../pages/Purchaser/SupplierInfo";
+import SupplierInfoOverview from "../pages/Purchaser/SupplierInfo/Overview.js";
+import SupplierInfoAdd from "../pages/Purchaser/SupplierInfo/Add";
+import SupplierInfoUpdate from "../pages/Purchaser/SupplierInfo/Update";
 
 const router = [
   {
@@ -78,8 +86,30 @@ const router = [
         element: <div />,
       },
       {
-        path: "2",
-        element: <diiv />,
+        path: "customer",
+        element: <UserInfo />,
+        children: [
+          {
+            path: "overview",
+            element: <UserInfoOverview />,
+          },
+          {
+            path: "add",
+            element: <UserInfoAdd />,
+          },
+          {
+            path: "update",
+            element: <UserInfoUpdate />,
+          },
+          {
+            path: "",
+            element: <Navigate to="overview" replace={true} />,
+          },
+        ],
+      },
+      {
+        path: "",
+        element: <Navigate to="customer" replace={true} />,
       },
     ],
   },
@@ -150,6 +180,32 @@ const router = [
       {
         path: "2",
         element: <div />,
+      },
+      {
+        path: "supplierInfo",
+        element: <SupplierInfo />,
+        children: [
+          {
+            path: "overview",
+            element: <SupplierInfoOverview />,
+          },
+          {
+            path: "add",
+            element: <SupplierInfoAdd />,
+          },
+          {
+            path: "update",
+            element: <SupplierInfoUpdate />,
+          },
+          {
+            path: "",
+            element: <Navigate to="overview" replace={true} />,
+          },
+        ],
+      },
+      {
+        path: "",
+        element: <Navigate to="supplierInfo" replace={true} />,
       },
     ],
   },

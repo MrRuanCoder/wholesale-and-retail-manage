@@ -8,18 +8,19 @@ import {
   TableRow,
   TableCell,
   Button,
-  Autocomplete,
   TableBody,
   InputAdornment,
   IconButton,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Lock, LockOpen } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import service from "../../../../utils/request";
-import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../../../../redux/Slices/UserSlice";
+import { useDispatch } from "react-redux";
+import { setUpdateFlag } from "../../../../redux/Slices/AdminSlice";
 import { toast } from "react-toastify";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -37,65 +38,66 @@ const options = [
   { label: "仓库管理员", id: 9 },
 ];
 
-const roleMap = {
-  1: "系统管理员",
-  2: "店长",
-  5: "客户",
-  6: "供货商",
-  7: "采购员",
-  8: "销售员",
-  9: "仓库管理员",
-};
-
 export default function UpdateUser() {
   const [searchParams] = useSearchParams();
   const userId = parseInt(searchParams.get("userId"));
 
-  const user = useSelector((state) =>
-    state.users.list.filter((item) => item.userId === userId).at(0)
-  );
-
-  const [username, setUsername] = useState(user.username);
-  const [password, setPassword] = useState(user.password);
-  const [phone, setPhone] = useState(user.phone);
-  const [email, setEmail] = useState(user.email);
-  const [address, setAddress] = useState(user.address);
-  const [role, setRole] = useState({
-    label: roleMap[user.roleId],
-    id: user.roleId,
-  });
-  const [description, setDescription] = useState(user.description);
-
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [roleId, setRoleId] = useState(null);
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    service
+      .get(`/sys/user/${userId}`)
+      .then(({ data: res }) => {
+        if (res.code === 20000) {
+          const {
+            username,
+            password,
+            phone,
+            email,
+            address,
+            roleId,
+            description,
+          } = res.data;
+          setUsername(username);
+          setPassword(password);
+          setPhone(phone);
+          setEmail(email);
+          setAddress(address);
+          setRoleId(roleId);
+          setDescription(description);
+          dispatch(setUpdateFlag(true));
+        } else throw new Error(res.message);
+      })
+      .catch((e) => {
+        toast.error("获取用户信息失败");
+      });
+  }, [userId, dispatch]);
 
   const handleUpdate = () => {
     service
       .put("/sys/user", {
         userId,
         username,
-        password: password || user.password,
+        password,
         phone,
         email,
         address,
-        roleId: role?.id,
+        roleId,
         description,
       })
       .then(({ data: res }) => {
         if (res.code === 20000) {
-          dispatch(
-            updateUser({
-              userId,
-              username,
-              password,
-              phone,
-              email,
-              address,
-              roleId: role?.id,
-              description,
-            })
-          );
+          dispatch(setUpdateFlag(true));
           toast.success("修改成功");
           navigate("../overview");
         } else throw new Error(res.message);
@@ -110,6 +112,22 @@ export default function UpdateUser() {
   useEffect(() => {
     if (changePwd) setPassword("");
   }, [changePwd]);
+
+  const [disabled, setDisabled] = useState(false);
+  useEffect(() => {
+    if (
+      username === "" ||
+      password === "" ||
+      phone === "" ||
+      email === "" ||
+      email === "" ||
+      address === "" ||
+      roleId === null ||
+      description === ""
+    )
+      setDisabled(true);
+    else setDisabled(false);
+  }, [username, password, phone, email, address, roleId, description]);
 
   return (
     <Stack mx={"20px"}>
@@ -206,20 +224,18 @@ export default function UpdateUser() {
               <TableCell>
                 <Typography>角色</Typography>
               </TableCell>
-              <TableCell align="right">
-                <Autocomplete
-                  disablePortal
-                  isOptionEqualToValue={(option, value) =>
-                    option.label === value.label
-                  }
-                  options={options}
+              <TableCell align="left">
+                <Select
+                  value={roleId}
+                  onChange={(e) => setRoleId(e.target.value)}
                   sx={{ width: 200 }}
-                  value={role}
-                  onChange={(event, newValue) => {
-                    setRole(newValue);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
+                >
+                  {options.map((item) => (
+                    <MenuItem value={item.id} key={item.id}>
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                </Select>
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
@@ -247,7 +263,7 @@ export default function UpdateUser() {
         <Button variant="contained" onClick={() => navigate("../")}>
           返回
         </Button>
-        <Button variant="contained" onClick={handleUpdate}>
+        <Button variant="contained" disabled={disabled} onClick={handleUpdate}>
           修改
         </Button>
       </Box>
