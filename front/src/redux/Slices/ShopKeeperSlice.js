@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const EmployeeSlice = createSlice({
+export const ShopKeeperSlice = createSlice({
   name: "employee",
   initialState: {
     addFlag: false,
@@ -16,9 +16,9 @@ export const EmployeeSlice = createSlice({
   },
 });
 
-export const { setAddFlag, setUpdateFlag } = EmployeeSlice.actions;
+export const { setAddFlag, setUpdateFlag } = ShopKeeperSlice.actions;
 
 export const selectAddFlag = (state) => state.shopKeeper.addFlag;
 export const selectUpdateFlag = (state) => state.shopKeeper.updateFlag;
 
-export default EmployeeSlice.reducer;
+export default ShopKeeperSlice.reducer;

@@ -21,6 +21,12 @@ import SupplierInfo from "../pages/Purchaser/SupplierInfo";
 import SupplierInfoOverview from "../pages/Purchaser/SupplierInfo/Overview.js";
 import SupplierInfoAdd from "../pages/Purchaser/SupplierInfo/Add";
 import SupplierInfoUpdate from "../pages/Purchaser/SupplierInfo/Update";
+import GoodsList from "../pages/Salesman/GoodsList";
+import StockLog from "../pages/StoreKeeper/Log";
+import StockStatistics from "../pages/StoreKeeper/Statistics";
+import StoreManage from "../pages/StoreKeeper/Manage";
+import ShopGoodsInfo from "../pages/Shopkeeper/GoodsInfo";
+import PurchaseGoodsInfo from "../pages/Purchaser/GoodsInfo";
 
 const router = [
   {
@@ -82,8 +88,8 @@ const router = [
     element: <Shopkeeper />,
     children: [
       {
-        path: "1",
-        element: <div />,
+        path: "goods",
+        element: <ShopGoodsInfo />,
       },
       {
         path: "customer",
@@ -118,12 +124,20 @@ const router = [
     element: <Storekeeper />,
     children: [
       {
-        path: "1",
-        element: <div />,
+        path: "log",
+        element: <StockLog />,
       },
       {
-        path: "2",
-        element: <div />,
+        path: "statistics",
+        element: <StockStatistics />,
+      },
+      {
+        path: "manage",
+        element: <StoreManage />,
+      },
+      {
+        path: "",
+        element: <Navigate to="statistics" replace={true} />,
       },
     ],
   },
@@ -146,12 +160,16 @@ const router = [
     element: <Salesman />,
     children: [
       {
-        path: "1",
-        element: <div />,
+        path: "goodsList",
+        element: <GoodsList />,
       },
       {
         path: "2",
         element: <div />,
+      },
+      {
+        path: "",
+        element: <Navigate to="goodsList" replace={true} />,
       },
     ],
   },
@@ -174,8 +192,8 @@ const router = [
     element: <Purchaser />,
     children: [
       {
-        path: "1",
-        element: <div />,
+        path: "goods",
+        element: <PurchaseGoodsInfo />,
       },
       {
         path: "2",

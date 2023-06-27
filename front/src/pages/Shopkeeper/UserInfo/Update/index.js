@@ -44,7 +44,7 @@ export default function Update() {
         } else throw new Error(res.message);
       })
       .catch((e) => {
-        toast.error("获取顾客信息失败");
+        toast.error("获取客户信息失败");
       });
   }, [customerId]);
 

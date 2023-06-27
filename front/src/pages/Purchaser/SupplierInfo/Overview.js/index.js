@@ -65,7 +65,7 @@ export default function Overview() {
         } else throw new Error(res.message);
       })
       .catch((e) => {
-        toast.error("获取用户列表失败");
+        toast.error("获取供应商列表失败");
       });
   }, [addflag, updateFlag, dispatch]);
 
@@ -144,6 +144,7 @@ export default function Overview() {
   const handleDelete = () => {
     const delItems = rows.filter((row) => row.checked);
     try {
+      if (delItems.length === 0) throw new Error("未选择任何用户");
       delItems.forEach((item) => {
         service
           .delete(`/sys/supplier/${item.supplierName}`)
@@ -171,9 +172,7 @@ export default function Overview() {
       .then(({ data: res }) => {
         if (res.code === 20000) {
           setList(
-            res.data.filter((item) =>
-              item.supplierName.startsWith(filteredName)
-            )
+            res.data.filter((item) => item.supplierName.includes(filteredName))
           );
         } else throw new Error(res.message);
       })
@@ -242,7 +241,7 @@ export default function Overview() {
                 marginRight: "5px",
               }}
             />
-            添加用户
+            添加供应商
           </Button>
           <Button
             variant="contained"

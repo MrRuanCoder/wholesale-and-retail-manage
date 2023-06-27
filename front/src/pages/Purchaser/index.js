@@ -8,7 +8,7 @@ import MyBreadcrumbs from "../../components/MyBreadcrumbs";
 
 const menu = [
   {
-    to: "1",
+    to: "goods",
     icon: <Note />,
     text: "采购商品信息",
   },
@@ -31,6 +31,7 @@ const breadcrumbNameMap = {
   "/supplierInfo/overview": "主页",
   "/supplierInfo/add": "添加供应商",
   "/supplierInfo/update": "修改供应商信息",
+  "/goods": "采购商品信息",
 };
 
 export default function Supplier() {

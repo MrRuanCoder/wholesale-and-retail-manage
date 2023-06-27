@@ -155,6 +155,7 @@ export default function Overview() {
   const handleDelete = () => {
     const delItems = rows.filter((row) => row.checked);
     try {
+      if (delItems.length === 0) throw new Error("未选择任何用户");
       delItems.forEach((item) => {
         service.delete(`/sys/user/${item.userId}`).then(({ data: res }) => {
           if (res.code === 20000) {
@@ -178,7 +179,7 @@ export default function Overview() {
       .then(({ data: res }) => {
         if (res.code === 20000) {
           setList(
-            res.data.filter((item) => item.username.startsWith(filteredName))
+            res.data.filter((item) => item.username.includes(filteredName))
           );
         } else throw new Error(res.message);
       })

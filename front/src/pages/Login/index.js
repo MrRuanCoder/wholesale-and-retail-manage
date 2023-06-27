@@ -6,6 +6,7 @@ import {
   Button,
   Typography,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import {
   Person,
@@ -20,6 +21,8 @@ import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLoginState, setRole } from "../../redux/Slices/AuthSlice.js";
+import { useRequest } from "ahooks";
+import { LoadingButton } from "@mui/lab";
 
 const pathMap = {
   1: "/admin",
@@ -40,9 +43,15 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { loading, runAsync } = useRequest(
+    () => service.post("/sys/user/login", { username, password }),
+    {
+      manual: true,
+    }
+  );
+
   const login = () => {
-    service
-      .post("/sys/user/login", { username, password })
+    runAsync()
       .then(({ data: res }) => {
         if (res.code === 20000) {
           dispatch(setLoginState(true));
@@ -64,6 +73,14 @@ export default function Login() {
     if (username === "" || password === "") setBtnState(false);
     else setBtnState(true);
   }, [username, password]);
+
+  useEffect(() => {
+    const handleEnter = (e) => {
+      if (e.key === "Enter" && btnState) login();
+    };
+    window.addEventListener("keyup", handleEnter);
+    return () => window.removeEventListener("keyup", handleEnter);
+  });
 
   return (
     <Box
@@ -144,10 +161,21 @@ export default function Login() {
             },
           }}
         />
-        <Button
+        <LoadingButton
           variant="contained"
           disabled={!btnState}
+          loading={loading}
+          loadingIndicator={
+            <CircularProgress
+              color="inherit"
+              size={20}
+              sx={{ "& svg": { mr: 0 } }}
+            />
+          }
           sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             bgcolor: "#3291F8",
             width: "357px",
             height: "42px",
@@ -158,7 +186,7 @@ export default function Login() {
           onClick={login}
         >
           登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
-        </Button>
+        </LoadingButton>
         <Typography
           mt={"94px"}
           fontSize={"14px"}

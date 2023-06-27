@@ -66,7 +66,7 @@ export default function Overview() {
         } else throw new Error(res.message);
       })
       .catch((e) => {
-        toast.error("获取顾客列表失败");
+        toast.error("获取客户列表失败");
       });
   }, [addflag, updateFlag, dispatch]);
 
@@ -146,6 +146,7 @@ export default function Overview() {
   const handleDelete = () => {
     const delItems = rows.filter((row) => row.checked);
     try {
+      if (delItems.length === 0) throw new Error("未选择任何用户");
       delItems.forEach((item) => {
         service
           .delete(`/sys/customer/${item.customerId}`)
@@ -172,13 +173,11 @@ export default function Overview() {
       .get("/sys/customer/all")
       .then(({ data: res }) => {
         if (res.code === 20000) {
-          setList(
-            res.data.filter((item) => item.name.startsWith(filteredName))
-          );
+          setList(res.data.filter((item) => item.name.includes(filteredName)));
         } else throw new Error(res.message);
       })
       .catch((e) => {
-        toast.error("获取顾客列表失败");
+        toast.error("获取客户列表失败");
       });
   };
 
@@ -186,10 +185,10 @@ export default function Overview() {
     <Stack>
       <Box>
         <Typography component={"span"} fontSize={"16px"} mx={"20px"}>
-          用户名
+          姓名
         </Typography>
         <TextField
-          placeholder="请输入用户名"
+          placeholder="请输入姓名"
           value={filteredName}
           onChange={(e) => setFilteredName(e.target.value)}
           sx={{
@@ -242,7 +241,7 @@ export default function Overview() {
                 marginRight: "5px",
               }}
             />
-            添加用户
+            添加客户
           </Button>
           <Button
             variant="contained"

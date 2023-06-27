@@ -8,7 +8,7 @@ import MyBreadcrumbs from "../../components/MyBreadcrumbs";
 
 const menu = [
   {
-    to: "1",
+    to: "goods",
     icon: <Note />,
     text: "店铺售货信息",
   },
@@ -24,8 +24,9 @@ const baseUrl = "/shopkeeper";
 const breadcrumbNameMap = {
   "/customer": "人员信息",
   "/customer/overview": "主页",
-  "/customer/add": "添加用户",
-  "/customer/update": "修改用户",
+  "/customer/add": "添加客户",
+  "/customer/update": "修改客户信息",
+  "/goods": "商品信息",
 };
 
 export default function Supplier() {

@@ -7,7 +7,7 @@ import { Outlet } from "react-router-dom";
 
 const menu = [
   {
-    to: "1",
+    to: "goodsList",
     icon: <FormatListBulleted />,
     text: "售货商品列表",
   },
@@ -23,7 +23,7 @@ export default function Supplier() {
     <Box display={"flex"}>
       <Sider title="售货员" menu={menu} />
 
-      <Stack bgcolor={"#fff"} width={"82.2%"}>
+      <Stack bgcolor={"#fff"} flexGrow={1}>
         <Header />
         <Divider />
         <Outlet />
