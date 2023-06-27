@@ -24,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/storageGoods")
+@CrossOrigin
 public class StorageGoodsController {
     @Autowired
     private StorageGoodsServiceImpl storageGoodsService;

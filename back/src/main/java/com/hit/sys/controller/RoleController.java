@@ -28,6 +28,7 @@ import java.util.Map;
  */
 @RestController   //记得该rest
 @RequestMapping("/sys/role")
+@CrossOrigin
 public class RoleController {
     @Autowired
     private IRoleService roleService;

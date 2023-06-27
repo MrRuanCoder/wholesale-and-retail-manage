@@ -23,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/storageLog")
+@CrossOrigin
 public class StorageLogController {
     @Autowired
     private StorageLogServiceImpl storageLogService;

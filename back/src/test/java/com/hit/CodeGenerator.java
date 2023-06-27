@@ -15,18 +15,19 @@ import java.util.Collections;
  */
 public class CodeGenerator {
     public static void main(String[] args) {
-        String url = "jdbc:mysql:///hitlab";
-        String username = "root";
-        String password = "";
+//        String url = "jdbc:mysql:///hitlab";
+        String url = "jdbc:mysql://43.143.209.231:3306/hitlab";
+        String username = "hitlab";
+        String password = "root";
         String moduleName = "sys";
-        String mapperLocation = "D:\\CS\\projects\\SPPM_lab\\SPPM_lab\\wholesale-and-retail-manage\\back\\src\\main\\resources\\mapper\\" + moduleName;
-        String tables = "t_customer";
+        String mapperLocation = "D:\\CS\\projects\\SPPM_lab\\SPPM_lab\\sprint3\\wholesale-and-retail-manage\\back\\src\\main\\resources\\mapper\\" + moduleName;
+        String tables = "t_order_wholesale";
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> {
                     builder.author("Ruan") // 设置作者
                             //.enableSwagger() // 开启 swagger 模式
                             //.fileOverride() // 覆盖已生成文件
-                            .outputDir("D:\\CS\\projects\\SPPM_lab\\SPPM_lab\\wholesale-and-retail-manage\\back\\src\\main\\java"); // 指定输出目录
+                            .outputDir("D:\\CS\\projects\\SPPM_lab\\SPPM_lab\\sprint3\\wholesale-and-retail-manage\\back\\src\\main\\java"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.hit") // 设置父包名
