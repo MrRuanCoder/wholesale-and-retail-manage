@@ -3,12 +3,12 @@ server:
 
 spring:
   datasource:
-      username: root
-      password:
-      url: jdbc:mysql:///hitlab
-#      username: hitlab
-#      password: root
-#      url: jdbc:mysql://43.143.209.231:3306/hitlab
+#      username: root
+#      password:
+#      url: jdbc:mysql:///hitlab
+      username: hitlab
+      password: root
+      url: jdbc:mysql://43.143.209.231:3306/hitlab
   redis:
     port: 6379
     host: localhost

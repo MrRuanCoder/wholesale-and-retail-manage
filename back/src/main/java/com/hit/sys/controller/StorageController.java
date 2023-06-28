@@ -1,6 +1,7 @@
 package com.hit.sys.controller;
 
 import com.hit.controller.commom.vo.Result;
+import com.hit.sys.entity.Customer;
 import com.hit.sys.entity.Storage;
 import com.hit.sys.entity.Supplier;
 import com.hit.sys.entity.User;
@@ -39,16 +40,25 @@ public class StorageController {
     @PostMapping("/add")
     public Result<?> addStorage(@RequestBody Storage supplier){   //HTTP请求的请求体解析为一个User的java对象
         storageService.save(supplier);
-        return Result.success("新增供应商成功");
+        return Result.success("新增仓库成功");
     }
 
-//    @ApiOperation("修改供应商信息")
-//    @PutMapping
-//    public Result<?> updateUser(@RequestBody Supplier supplier){
-//        supplierService.updateById(supplier);       //已传入的字段如果为空，该字段是不会更新的
-//        return Result.success("修改供应商成功");
-//    }
+    //使用需考虑
+    @ApiOperation("修改仓库信息")
+    @PutMapping
+    public Result<?> updateStorage(@RequestBody Storage supplier){
+        storageService.updateById(supplier);       //已传入的字段如果为空，该字段是不会更新的
+        return Result.success("修改仓库成功");
+    }
 
+    @ApiOperation("通过id查询仓库数据")
+    @GetMapping("/{id}")    //通过id查到用户数据
+    public Result<Storage> getStorageById(@PathVariable("id") Integer id){
+        Storage customer = storageService.getById(id);
+        return Result.success(customer);
+    }
+
+    //使用需考虑
 //    @ApiOperation("通过id删除用户")
 //    @DeleteMapping("/{name}")
 //    public Result<User> deleteUserById(@PathVariable("name") String name){

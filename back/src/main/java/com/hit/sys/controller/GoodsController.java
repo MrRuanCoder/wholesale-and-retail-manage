@@ -22,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/goods")
+@CrossOrigin
 public class GoodsController {
     @Autowired
     private GoodsServiceImpl goodsService;
@@ -45,6 +46,12 @@ public class GoodsController {
     public Result<?> updateGoods(@RequestBody Goods supplier){
         goodsService.updateById(supplier);
         return Result.success("修改商品成功");
+//        boolean updated = goodsService.updateById(supplier);
+//        if (updated) {
+//            return Result.success("修改商品成功");
+//        } else {
+//            return Result.fail("修改商品失败");
+//        }
     }
 
 
