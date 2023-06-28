@@ -1,19 +1,14 @@
 package com.hit.sys.controller;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.hit.controller.commom.vo.Result;
 import com.hit.sys.entity.*;
-import com.hit.sys.service.impl.StorageGoodsServiceImpl;
-import com.hit.sys.service.impl.StorageLogServiceImpl;
-import com.hit.sys.service.impl.StorageServiceImpl;
-import com.hit.sys.service.impl.SupplierServiceImpl;
+import com.hit.sys.service.impl.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -33,11 +28,54 @@ public class StorageGoodsController {
     @Autowired
     private StorageLogServiceImpl storageLogService;
 
+    @Autowired
+    private GoodsServiceImpl goodsService;
+    @Autowired
+    private StorageServiceImpl storageService;
+
+
     @ApiOperation("查询所有信息")
     @GetMapping("/all")
     public Result<List<StorageGoods>> getAllSG(){
         List<StorageGoods> list = storageGoodsService.list();
         return Result.success(list,"查询成功");
+    }
+
+    @ApiOperation("查询所有信息")
+    @GetMapping("/all1")
+    public Result<List<Map<String, Object>>> getAllSG1(){
+        List<Goods> listG = goodsService.list();
+        List<Storage> listS = storageService.list();
+        List<StorageGoods> listSG = storageGoodsService.list();
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Goods goods : listG) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("goodsName", goods.getName());
+            map.put("purchasePrice", goods.getPurchasePrice());
+
+            List<Map<String, Object>> numbers = new ArrayList<>();
+            for (Storage storage : listS) {
+                Map<String, Object> map1 = new HashMap<>();
+                map1.put("storageName", storage.getStorageName());
+//                map1.put("number", storage.getStorageNumber());
+                Optional<StorageGoods> first = listSG.stream().filter(sg -> sg.getGoodsName()
+                                .equals(goods.getName()) && sg.getStorageName()
+                                .equals(storage.getStorageName()))
+                        .findFirst();
+                if (first.isPresent()) {
+                    map1.put("number", first.get().getNumber());
+                } else {
+                    map1.put("number", 0);
+                }
+
+                numbers.add(map1);
+            }
+            map.put("numbers", numbers);
+            result.add(map);
+}
+        return Result.success(result,"查询成功");
     }
 
     @ApiOperation("在库存仓库中新增货品（待商定）")

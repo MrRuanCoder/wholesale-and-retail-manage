@@ -30,16 +30,16 @@ public class OrderWholesaleController {
 
     @ApiOperation("查询零售单所有信息")
     @GetMapping("/all")
-    public Result<List<OrderWholesale>> getAllCustomer(){
+    public Result<List<OrderWholesale>> getAllOrderWholesale(){
         List<OrderWholesale> list = orderWholesaleServiceService.list();
         return Result.success(list,"查询成功");
     }
 
     @ApiOperation("新增零售单")
     @PostMapping("/add")
-    public Result<?> addOrderWholesale(@RequestBody OrderWholesale customer){   //HTTP请求的请求体解析为一个User的java对象
-        orderWholesaleServiceService.save(customer);
-        return Result.success("新增客户成功");
+    public Result<?> addOrderWholesale(@RequestBody List<OrderWholesale> a){   //HTTP请求的请求体解析为一个User的java对象
+        a.forEach(orderWholesaleServiceService::save);
+        return Result.success("新增销售单成功");
     }
 
     @ApiOperation("修改零售单信息")
@@ -52,14 +52,14 @@ public class OrderWholesaleController {
 
     @ApiOperation("通过id查询零售单")
     @GetMapping("/{id}")    //通过id查到用户数据
-    public Result<OrderWholesale> getOrderById(@PathVariable("id") Integer id){
+    public Result<OrderWholesale> getOrderWholesaleById(@PathVariable("id") Integer id){
         OrderWholesale customer = orderWholesaleServiceService.getById(id);
         return Result.success(customer);
     }
 
     @ApiOperation("通过id删除客户")
     @DeleteMapping("/{id}")
-    public Result<OrderWholesale> deleteOrderById(@PathVariable("id") Integer id){
+    public Result<OrderWholesale> deleteOrderWholesaleById(@PathVariable("id") Integer id){
         orderWholesaleServiceService.removeById(id);
         return Result.success("删除客户成功");
     }

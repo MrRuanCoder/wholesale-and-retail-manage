@@ -29,7 +29,7 @@ public class OrderRetailController {
 
     @ApiOperation("查询零售单所有信息")
     @GetMapping("/all")
-    public Result<List<OrderRetail>> getAllCustomer(){
+    public Result<List<OrderRetail>> getAllOrderRetail(){
         List<OrderRetail> list = orderRetailServiceService.list();
         return Result.success(list,"查询成功");
     }
@@ -51,14 +51,14 @@ public class OrderRetailController {
 
     @ApiOperation("通过id查询零售单")
     @GetMapping("/{id}")    //通过id查到用户数据
-    public Result<OrderRetail> getCustomerById(@PathVariable("id") Integer id){
+    public Result<OrderRetail> getOrderRetailById(@PathVariable("id") Integer id){
         OrderRetail customer = orderRetailServiceService.getById(id);
         return Result.success(customer);
     }
 
     @ApiOperation("通过id删除客户")
     @DeleteMapping("/{id}")
-    public Result<OrderRetail> deleteCustomerById(@PathVariable("id") Integer id){
+    public Result<OrderRetail> deleteOrderRetailById(@PathVariable("id") Integer id){
         orderRetailServiceService.removeById(id);
         return Result.success("删除客户成功");
     }
