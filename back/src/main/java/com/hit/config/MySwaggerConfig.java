@@ -68,7 +68,7 @@ public class MySwaggerConfig {
                 .title("通用批发零售业务管理系统接口文档")
                 .description("通用批发零售业务管理系统后端代码--By 阮浩麒")
                 .version("1.0")
-                .contact(new Contact("qqcn", "http://www.qqcn.cn", "qqcn@aliyun.com"))
+                .contact(new Contact("spear", "https://www.google.com/", "spearKanojo@outlook.com"))
                 .build();
     }
 }
