@@ -1,7 +1,5 @@
 import {
-  Autocomplete,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -15,19 +13,17 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import service from "../../../../utils/request";
 import { toast } from "react-toastify";
 import { Add, Remove } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { useRequest } from "ahooks";
 import { useSelector } from "react-redux";
-import { nanoid } from "nanoid";
 
 export default function UpdateModal(props) {
   const { open, onClose, getAll, orderId, idArr } = props;
 
-  const userId = useSelector((state) => state.auth.userId);
   const username = useSelector((state) => state.auth.username);
 
   const [list, setList] = useState([{}]);
@@ -52,7 +48,7 @@ export default function UpdateModal(props) {
 
   const [goodsList, setGoodsList] = useState([]);
 
-  const { loading: loadingGoods } = useRequest(getGoods, {
+  useRequest(getGoods, {
     onSuccess: (data) => {
       setGoodsList(
         data.data.data.map((item) => ({

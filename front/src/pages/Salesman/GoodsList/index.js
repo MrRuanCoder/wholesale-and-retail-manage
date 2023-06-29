@@ -176,7 +176,7 @@ export default function GoodsList() {
           <TableBody>
             {rows.map((row) => (
               <TableRow
-                key={row.customerId}
+                key={row.goodsId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell align="center">{row.goodsId}</TableCell>

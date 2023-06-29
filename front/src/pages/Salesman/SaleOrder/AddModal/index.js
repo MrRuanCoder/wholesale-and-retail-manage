@@ -122,7 +122,7 @@ export default function AddModal(props) {
                       size="small"
                       sx={{ minWidth: "120px" }}
                       disableClearable
-                      value={item.goods}
+                      value={item?.goods || { name: "" }}
                       onChange={(e, newValue) =>
                         setList((list) =>
                           list.map((item, i) =>
@@ -141,7 +141,7 @@ export default function AddModal(props) {
                             ...params.InputProps,
                             endAdornment: (
                               <Fragment>
-                                {0 ? (
+                                {loadingGoods ? (
                                   <CircularProgress color="inherit" size={20} />
                                 ) : null}
                                 {params.InputProps.endAdornment}

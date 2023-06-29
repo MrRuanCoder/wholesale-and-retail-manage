@@ -73,11 +73,13 @@ const router = [
       },
       {
         path: "order",
-        element: <OrderManage />,
+        // element: <OrderManage />,
+        element: <Navigate to="user" replace={true} />,
       },
       {
         path: "system",
-        element: <SystemManage />,
+        // element: <SystemManage />,
+        element: <Navigate to="user" replace={true} />,
       },
       {
         path: "",
@@ -189,7 +191,7 @@ const router = [
       },
       {
         path: "2",
-        element: <diiv />,
+        element: <div />,
       },
     ],
   },
@@ -203,7 +205,7 @@ const router = [
       },
       {
         path: "2",
-        element: <div />,
+        element: <Navigate to="goods" replace={true} />,
       },
       {
         path: "supplierInfo",
