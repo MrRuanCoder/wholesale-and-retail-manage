@@ -20,7 +20,12 @@ import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLoginState, setRole } from "../../redux/Slices/AuthSlice.js";
+import {
+  setLoginState,
+  setRole,
+  setUserId,
+  setUsername as setUname,
+} from "../../redux/Slices/AuthSlice.js";
 import { useRequest } from "ahooks";
 import { LoadingButton } from "@mui/lab";
 
@@ -59,7 +64,12 @@ export default function Login() {
           const payload = jwt_decode(res.data.token);
           const sub = payload.sub;
           const roleId = JSON.parse(sub).roleId;
+          const sub_sub = JSON.parse(JSON.parse(sub).sub);
+          const userId = sub_sub.userId;
+          const username = sub_sub.username;
           dispatch(setRole(roleId));
+          dispatch(setUserId(userId));
+          dispatch(setUname(username));
           navigate(pathMap[roleId]);
           toast.success("登录成功");
         } else throw new Error(res.message);

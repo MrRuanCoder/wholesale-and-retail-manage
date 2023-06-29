@@ -27,6 +27,8 @@ import StockStatistics from "../pages/StoreKeeper/Statistics";
 import StoreManage from "../pages/StoreKeeper/Manage";
 import ShopGoodsInfo from "../pages/Shopkeeper/GoodsInfo";
 import PurchaseGoodsInfo from "../pages/Purchaser/GoodsInfo";
+import SaleOrder from "../pages/Salesman/SaleOrder";
+import ShopKeeperStorage from "../pages/Shopkeeper/Storage";
 
 const router = [
   {
@@ -92,6 +94,10 @@ const router = [
         element: <ShopGoodsInfo />,
       },
       {
+        path: "storage",
+        element: <ShopKeeperStorage />,
+      },
+      {
         path: "customer",
         element: <UserInfo />,
         children: [
@@ -115,7 +121,7 @@ const router = [
       },
       {
         path: "",
-        element: <Navigate to="customer" replace={true} />,
+        element: <Navigate to="goods" replace={true} />,
       },
     ],
   },
@@ -137,7 +143,7 @@ const router = [
       },
       {
         path: "",
-        element: <Navigate to="statistics" replace={true} />,
+        element: <Navigate to="log" replace={true} />,
       },
     ],
   },
@@ -164,8 +170,8 @@ const router = [
         element: <GoodsList />,
       },
       {
-        path: "2",
-        element: <div />,
+        path: "saleOrder",
+        element: <SaleOrder />,
       },
       {
         path: "",
@@ -223,7 +229,7 @@ const router = [
       },
       {
         path: "",
-        element: <Navigate to="supplierInfo" replace={true} />,
+        element: <Navigate to="goods" replace={true} />,
       },
     ],
   },

@@ -12,7 +12,7 @@ const menu = [
     text: "售货商品列表",
   },
   {
-    to: "2",
+    to: "saleOrder",
     icon: <Note />,
     text: "售货单",
   },

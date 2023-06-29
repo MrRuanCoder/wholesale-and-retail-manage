@@ -46,7 +46,7 @@ export default function Sider(props) {
       >
         {title}
       </Box>
-      <Stack>
+      <Stack id="tab">
         {menu.map((item) => (
           <Tab key={item.to} to={item.to}>
             {item.icon}

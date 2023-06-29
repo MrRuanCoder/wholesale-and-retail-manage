@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import { Box, Divider, Stack } from "@mui/material";
-import { Note, Person } from "@mui/icons-material";
+import { Note, Person, Settings } from "@mui/icons-material";
 import { Outlet, useLocation } from "react-router-dom";
 import MyBreadcrumbs from "../../components/MyBreadcrumbs";
 
@@ -17,6 +17,11 @@ const menu = [
     icon: <Person />,
     text: "人员信息",
   },
+  {
+    to: "storage",
+    icon: <Settings />,
+    text: "店铺库存统计",
+  },
 ];
 
 const baseUrl = "/shopkeeper";
@@ -27,6 +32,7 @@ const breadcrumbNameMap = {
   "/customer/add": "添加客户",
   "/customer/update": "修改客户信息",
   "/goods": "商品信息",
+  "/storage": "店铺库存统计",
 };
 
 export default function Supplier() {
